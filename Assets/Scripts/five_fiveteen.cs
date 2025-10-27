@@ -1,57 +1,89 @@
 using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using System.Security.Cryptography;
 using Unity.Profiling;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class five_fiveteen: MonoBehaviour
+public class five_fiveteen : MonoBehaviour
 {
 
     public GameObject left;
+    public GameObject cube;
+    private float radius = 5;
     public GameObject right;
-    public float speed = 20f;
-    private float angle_left = 0f;
-    private float angle_right = 0f;
-    private float maxAngle = 90f;
-    private float minAngle = 0f;
-    private int directionLeft = 1;
-    private int directionRight = -1;
+    public float speed = 40f;
+    private Vector3 center;
+    private float rotate_anglel = 0f;
+    private float rotate_angler = 0f;
+    private float anglel = 0;
+    private float angler = 360;
+    private float direction = 1;
+    private float directionr = 1;
+    private float Offset = 180;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         left.transform.position = new Vector3(8f, 2.83f, 13.77f);
-        right.transform.position = new Vector3(19f, 2.83f, 13.77f);
+        right.transform.position = new Vector3(22f, 2.83f, 13.77f);
+        cube.transform.position = new Vector3(15f, 2.83f, 13.77f);
     }
 
     // Update is called once per frame
     void Update()
     {
-        angle_left += directionLeft * speed * Time.deltaTime;
-        angle_right += directionRight * speed + Time.deltaTime;
-        //prawa
-        if(angle_right <= minAngle)
+        center = cube.transform.position;
+        anglel += speed * Time.deltaTime * direction; //l
+        angler += speed * Time.deltaTime * directionr;
+        rotate_anglel += speed * Time.deltaTime * direction;
+        rotate_angler -= speed * Time.deltaTime * directionr;
+
+        if (anglel >= 90) //l
         {
-            angle_right = minAngle;
-            directionLeft = 1;
+            anglel = 90;
+            direction = -1;
         }
-        else if(angle_right >= maxAngle)
+        else if (anglel <= 0) //l
         {
-            angle_right = maxAngle;
-            directionLeft = -1;
+            anglel = 0;
+            direction = 1;
         }
-        //lewa
-        if (angle_left <= minAngle)
+
+        if (angler <= 270 )
         {
-            angle_left = minAngle;
-            directionRight = -1;
+            angler = 270;
+            directionr = 1;
         }
-        else if (angle_left >= -maxAngle)
+        else if (angler >= 360)
         {
-            angle_left = -maxAngle;
-            directionRight = 1;
+            angler = 360;
+            directionr = -1;
         }
-        left.transform.localRotation = Quaternion.Euler(0f, angle_left, 0f);
-        right.transform.localRotation = Quaternion.Euler(0f, angle_right, 0f);
+
+        if(rotate_anglel > 90f)
+        {
+            rotate_anglel = 90f;
+        }
+        if (rotate_anglel < 0)
+        {
+            rotate_anglel = 0;
+        }
+        if(rotate_angler > 90f)
+        {
+            rotate_angler = 90f;
+        }
+        if(rotate_angler  < 0f)
+        {
+            rotate_angler = 0f;
+        }
+
+        float rl = Mathf.Deg2Rad * (anglel + Offset); //l
+        float rr = Mathf.Deg2Rad * (angler); //r;
+        left.transform.position = center + new Vector3(Mathf.Cos(rl) * radius, 0, Mathf.Sin(rl) * radius);
+        right.transform.position = center + new Vector3(Mathf.Cos(rr) * radius, 0, Mathf.Sin(rr) * radius);
+        left.transform.localRotation = Quaternion.Euler(0f, -rotate_anglel + 180f, 0f);
+        right.transform.localRotation = Quaternion.Euler(0f, rotate_angler + 180f, 0f);
     }
 }
+
