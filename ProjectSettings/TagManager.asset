@@ -5,6 +5,11 @@ TagManager:
   serializedVersion: 3
   tags:
   - Ground
+  - ladder
+  - axe
+  - onmoving
+  - spikes
+  - bridge
   layers:
   - Default
   - TransparentFX

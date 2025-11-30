@@ -2,14 +2,13 @@ using UnityEngine;
 
 public class Movement : MonoBehaviour
 {
-
-    public float speed = 5f;
-    public float thrust = 5f;
+    public float thrust = 2f;
     public float jumpforce = 7f;
     private bool isGrounded = true;
     private Rigidbody rb;
     private Transform nose;
     private Vector3 Offset = new Vector3 (0.5f, 0f, 0f);
+    private bool isonladder = false;
     Camera_Position cam;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -23,7 +22,7 @@ public class Movement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (cam.move_direction_a)
+        if (cam.move_direction_a && !isonladder)
         {
             if (Input.GetKey(KeyCode.W))
             {
@@ -56,7 +55,8 @@ public class Movement : MonoBehaviour
                 rb.AddForce(Vector3.up * jumpforce, ForceMode.Impulse);
                 isGrounded = false;
             }
-        }else if (!cam.move_direction_a)
+        }
+        else if (!cam.move_direction_a && !isonladder)
         {
             if (Input.GetKey(KeyCode.W))
             {
@@ -90,8 +90,18 @@ public class Movement : MonoBehaviour
                 isGrounded = false;
             }
         }
+        else if (isonladder)
+        {
+            if (Input.GetKey(KeyCode.W))
+            {
+                rb.AddForce(Vector3.up * thrust);
+            }
+            if (Input.GetKey(KeyCode.S))
+            {
+                rb.AddForce(Vector3.down * thrust);
+            }
+        }
     }
-
 
 
     void OnCollisionEnter(Collision collision)
@@ -100,6 +110,18 @@ public class Movement : MonoBehaviour
         {
             isGrounded = true;
         }
+
+        if (collision.gameObject.CompareTag("ladder"))
+        {
+            isonladder = true;
+        }
+
+        if (collision.gameObject.CompareTag("onmoving"))
+        {
+            transform.SetParent(collision.transform);
+            isGrounded = true;
+        }
+
     }
 
     void OnCollisionExit(Collision collision)
@@ -108,7 +130,18 @@ public class Movement : MonoBehaviour
         {
             isGrounded = false;
         }
-    }
 
+        if (collision.gameObject.CompareTag("ladder"))
+        {
+            isonladder = false;
+        }
+
+        if (collision.gameObject.CompareTag("onmoving"))
+        {
+            transform.SetParent(null);
+            isGrounded = false;
+        }
+
+    }
 
 }

@@ -25,9 +25,9 @@ public class five_fiveteen : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        left.transform.position = new Vector3(8f, 2.83f, 13.77f);
-        right.transform.position = new Vector3(22f, 2.83f, 13.77f);
-        cube.transform.position = new Vector3(15f, 2.83f, 13.77f);
+        left.transform.position = new Vector3(68.11f, 8.96f, 4.56f);
+        right.transform.position = new Vector3(82.11f, 8.96f, 4.56f);
+        cube.transform.position = new Vector3(75.11f, 8.96f, 4.55f);
     }
 
     // Update is called once per frame

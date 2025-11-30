@@ -15,7 +15,7 @@ public class five_fourteen : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        transform.localRotation = Quaternion.Euler(-90f, 0, 0);
+        transform.localRotation = Quaternion.Euler(-90f, 0f, 0f);
     }
 
     // Update is called once per frame
@@ -33,6 +33,6 @@ public class five_fourteen : MonoBehaviour
             currentAngle = -maxAngle;
             direction = 1;
         }
-        transform.localRotation = Quaternion.Euler(currentAngle - 90, -90f, 90);
+        transform.localRotation = Quaternion.Euler(currentAngle - 90, -180f, 90f);
     }
 }
